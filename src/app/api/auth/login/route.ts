@@ -36,6 +36,13 @@ export async function POST(request: NextRequest) {
     // Return user data (excluding password)
     const { password: _, ...userWithoutPassword } = user;
 
+    // Log successful login to the terminal
+    console.log('User logged in:', {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    });
+
     return NextResponse.json({
       message: 'Login successful',
       user: userWithoutPassword

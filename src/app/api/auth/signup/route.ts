@@ -47,6 +47,14 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Log the new user to the terminal
+    console.log('New user created:', {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    });
+
     return NextResponse.json({
       message: 'User created successfully',
       user
