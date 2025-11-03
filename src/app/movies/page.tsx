@@ -226,8 +226,15 @@ export default function MoviesPage() {
                 Personal Movie Tracker
               </Link>
             </div>
-            
+
             <div className="flex items-center gap-4">
+            <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg shadow-blue-500/20"
+              >
+                <Plus className="w-4 h-4" />
+                Add Movie
+              </button>
               <span className="text-gray-300">
                 Welcome, <span className="text-white font-medium">{user.name}</span>
               </span>
