@@ -95,7 +95,7 @@ export default function AddMovieModal({ isOpen, onClose, onMovieAdded, userId }:
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Modal Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">🎬 Add New Movie</h2>
+          <h2 className="text-2xl font-display font-bold text-gray-900">🎬 Add New Movie</h2>
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 text-2xl font-bold"

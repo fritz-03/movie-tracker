@@ -1,118 +1,168 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import type React from "react"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const router = useRouter();
+    email: "",
+    password: "",
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+      [e.target.name]: e.target.value,
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError("")
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        // Store user data in localStorage (simple approach)
-        localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/dashboard'); // Redirect to dashboard or home
+        localStorage.setItem("user", JSON.stringify(data.user))
+        router.push("/dashboard")
       } else {
-        setError(data.error || 'Something went wrong');
+        setError(data.error || "Something went wrong")
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
-            </Link>
-          </p>
+    <div className="min-h-screen flex">
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#1a0b1e]">
+        {/* Animated gradient blobs */}
+        <div className="absolute inset-0">
+          <div className="absolute top-[-10%] left-[-5%] w-[60%] h-[70%] bg-gradient-to-br from-blue-500 via-cyan-400 to-sky-400 rounded-full blur-[120px] opacity-60 animate-blob" />
+          <div className="absolute top-[20%] right-[-10%] w-[50%] h-[60%] bg-gradient-to-bl from-blue-600 via-blue-500 to-indigo-400 rounded-full blur-[100px] opacity-50 animate-blob animation-delay-2000" />
+          <div className="absolute bottom-[-15%] left-[10%] w-[55%] h-[65%] bg-gradient-to-tr from-blue-400 via-cyan-300 to-sky-300 rounded-full blur-[110px] opacity-40 animate-blob animation-delay-4000" />
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </div>
+
+        {/* Content overlay */}
+        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg" />
+            <span className="text-white text-xl font-semibold">Personal Movie Tracker</span>
           </div>
 
-          {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
-          )}
-
           <div>
+            <h1 className="text-6xl font-display font-bold text-white leading-tight text-balance">
+              Track every movie<span className="text-blue-500">_</span>
+            </h1>
+            <p className="text-xl text-white/80 mt-4 font-body">
+              Build your personal cinema collection
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#0f0f0f] p-8">
+        <div className="w-full max-w-md space-y-8">
+          <div>
+            <h2 className="text-3xl font-display font-bold text-white">Sign in</h2>
+          </div>
+
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  className="w-full px-4 py-3 bg-[#1a1a1a] border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {error && (
+              <div className="text-red-400 text-sm bg-red-950/30 border border-red-900/50 rounded-lg p-3">{error}</div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
-          </div>
-        </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-800" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-[#0f0f0f] text-gray-500">OR</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              {/* <Link href="/forgot-password" className="text-gray-400 hover:text-white transition-colors">
+                Forgot password?
+              </Link> */}
+              <Link href="/signup" className="text-gray-400 hover:text-white transition-colors">
+                Sign up
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  );
+  )
 }

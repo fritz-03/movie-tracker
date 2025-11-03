@@ -52,9 +52,9 @@ const StatCard = ({ title, value, subtitle, icon, color = "blue" }: {
     <div className={`${colorClasses[color as keyof typeof colorClasses]} p-6 rounded-lg border`}>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium opacity-75">{title}</p>
-          <p className="text-2xl font-bold">{value}</p>
-          {subtitle && <p className="text-sm opacity-60">{subtitle}</p>}
+          <p className="text-sm font-body font-medium opacity-75">{title}</p>
+          <p className="text-2xl font-display font-bold">{value}</p>
+          {subtitle && <p className="text-sm font-body opacity-60">{subtitle}</p>}
         </div>
         <div className="text-3xl">{icon}</div>
       </div>
@@ -113,7 +113,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold">Movie Tracker</h1>
+              <h1 className="text-xl font-display font-semibold">Movie Tracker</h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-700">Welcome, {user.name}!</span>
@@ -131,10 +131,10 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">
               🎬 Your Movie Dashboard
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-body">
               Welcome back! Here's an overview of your movie collection.
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 {/* Quick Actions Card */}
                 <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                  <h3 className="text-lg font-display font-semibold text-gray-900 mb-4">Quick Actions</h3>
                   <div className="space-y-3">
                     <button
                       onClick={() => setIsAddModalOpen(true)}
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                 {/* Top Rated Movie */}
                 {stats?.highestRatedMovie && (
                   <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">🏆 Highest Rated Movie</h3>
+                    <h3 className="text-lg font-display font-semibold text-gray-900 mb-4">🏆 Highest Rated Movie</h3>
                     <div className="border-l-4 border-yellow-400 pl-4">
                       <h4 className="font-medium text-gray-900">{stats.highestRatedMovie.title}</h4>
                       <p className="text-sm text-gray-600">{stats.highestRatedMovie.genre}</p>
@@ -218,7 +218,7 @@ export default function DashboardPage() {
               {recentMovies.length > 0 && (
                 <div className="bg-white rounded-lg shadow p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">📽️ Recently Added</h3>
+                    <h3 className="text-lg font-display font-semibold text-gray-900">📽️ Recently Added</h3>
                     <Link href="/movies" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                       View all →
                     </Link>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               {!loading && stats?.totalMovies === 0 && (
                 <div className="text-center py-12 bg-white rounded-lg shadow">
                   <div className="text-6xl mb-4">🍿</div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-display font-semibold text-gray-900 mb-2">
                     Start Your Movie Journey!
                   </h3>
                   <p className="text-gray-600 mb-6">

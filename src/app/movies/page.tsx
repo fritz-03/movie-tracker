@@ -78,7 +78,7 @@ const MovieCard = ({ movie, onDelete }: { movie: Movie; onDelete: (id: number) =
 
       {/* Movie Info */}
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+        <h3 className="text-lg font-display font-semibold text-gray-900 mb-2 line-clamp-2">
           {movie.title}
         </h3>
 
@@ -210,7 +210,7 @@ export default function MoviesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center space-x-4">
-              <Link href="/dashboard" className="text-xl font-semibold text-blue-600 hover:text-blue-800">
+              <Link href="/dashboard" className="text-xl font-display font-semibold text-blue-600 hover:text-blue-800">
                 Movie Tracker
               </Link>
               <button
@@ -235,10 +235,10 @@ export default function MoviesPage() {
 
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
             🎬 Your Movie Collection
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 font-body">
             {loading ? 'Loading your movies...' : `You have watched ${movies.length} movie${movies.length !== 1 ? 's' : ''}`}
           </p>
         </div>
