@@ -39,7 +39,6 @@ export default function LoginPage() {
       if (response.ok) {
         // Store user data in localStorage (simple approach)
         localStorage.setItem('user', JSON.stringify(data.user));
-        alert('Login successful!');
         router.push('/dashboard'); // Redirect to dashboard or home
       } else {
         setError(data.error || 'Something went wrong');
