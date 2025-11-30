@@ -24,6 +24,7 @@ A cloud-based web application for tracking your personal movie collection, built
 ### Option 1: Run Locally (Localhost)
 
 #### Prerequisites
+
 - Node.js 20+ installed
 - SQLite (default) or MySQL database
 
@@ -31,7 +32,7 @@ A cloud-based web application for tracking your personal movie collection, built
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/movie-tracker.git
+git clone https://github.com/fritz-03/movie-tracker.git
 cd movie-tracker
 
 # 2. Install dependencies
@@ -46,6 +47,7 @@ npm run dev
 ```
 
 #### 5. Open your browser
+
 Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -53,6 +55,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ### Option 2: Deploy on AWS EC2
 
 #### Prerequisites
+
 - AWS EC2 instance (Amazon Linux 2023)
 - AWS RDS MySQL database
 - Security groups configured (ports 22, 3000, 3306)
@@ -73,7 +76,7 @@ sudo yum install npm -y
 sudo dnf install mariadb105 -y
 
 # 5. Clone the repository
-git clone https://github.com/YOUR_USERNAME/movie-tracker.git
+git clone https://github.com/fritz-03/movie-tracker.git
 cd movie-tracker
 
 # 6. Install dependencies
@@ -109,7 +112,9 @@ npm run dev
 ```
 
 #### 11. Access the application
+
 Open your browser and navigate to:
+
 ```
 http://your-ec2-public-ip:3000
 ```
