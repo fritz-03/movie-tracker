@@ -1,127 +1,190 @@
 # Movie Tracker
 
-A Next.js web application for tracking your personal movie collection with AWS cloud integration.
+A cloud-based web application for tracking your personal movie collection, built with Next.js and deployed on AWS.
 
 ## Features
 
 - User authentication (signup/login)
 - Personal movie collection management
-- **AWS RDS MySQL database** with Prisma ORM
+- Add, edit, delete movies with ratings & notes
+- AWS RDS MySQL database
 - Responsive design with Tailwind CSS
-- Cloud-based data storage
-
-## Cloud Services Used
-
-- **AWS RDS MySQL**: Managed relational database for persistent data storage
-- **AWS EC2**: Elastic Compute Cloud for hosting the web application
-- **AWS Cloud Infrastructure**: Scalable and reliable hosting
-
-## Getting Started
-
-### Prerequisites: Install Node.js (Fedora/RHEL)
-
-If you don't have Node.js installed, run these commands:
-
-```bash
-sudo dnf remove nodejs -y
-
-curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
-
-sudo dnf install -y nodejs
-
-node -v
-npm -v
-```
-
-### 1. Install dependencies:
-```bash
-npm install
-```
-
-### 2. Set up AWS RDS MySQL:
-Follow the detailed steps in [RDS_INTEGRATION_STEPS.md](./RDS_INTEGRATION_STEPS.md)
-
-Quick summary:
-- Create RDS MySQL instance on AWS
-- Configure security group (allow port 3306)
-- Get RDS endpoint
-
-### 3. Configure environment:
-Create a `.env` file in the root directory:
-```env
-DATABASE_URL="mysql://admin:YOUR_PASSWORD@your-rds-endpoint.amazonaws.com:3306/movietracker"
-```
-
-### 4. Set up the database:
-```bash
-npx prisma generate
-npx prisma migrate dev --name init_mysql
-```
-
-### 5. Run the development server:
-```bash
-npm run dev
-```
-
-### 6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Tech Stack
 
-- **Framework**: Next.js 16
-- **Database**: AWS RDS MySQL with Prisma ORM
-- **Cloud Platform**: Amazon Web Services (AWS)
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
+- **Frontend**: Next.js 16, React 19, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Prisma ORM
+- **Database**: MySQL (AWS RDS or local)
+- **Cloud**: AWS EC2, AWS RDS
 
-## Database Schema
+---
 
-- **Users**: id, name, email, password, createdAt
-- **Movies**: id, title, genre, watchDate, rating, notes, imageUrl, userId, createdAt
+## Getting Started
 
-## Documentation
+### Option 1: Run Locally (Localhost)
 
-### 🎯 Start Here
-- **[Complete Setup Summary](./COMPLETE_SETUP_SUMMARY.md)** - Full project overview, architecture, and checklist
+#### Prerequisites
 
-### Database Setup (RDS MySQL)
-- [Detailed RDS Integration Steps](./RDS_INTEGRATION_STEPS.md) - Complete walkthrough
-- [RDS Quick Checklist](./RDS_QUICK_CHECKLIST.md) - Fast reference guide
+- Node.js 20+ installed
+- SQLite (default) or MySQL database
 
-### Deployment (EC2)
-- [EC2 Deployment Guide](./EC2_DEPLOYMENT_GUIDE.md) - Full deployment walkthrough
-- [EC2 Quick Checklist](./EC2_QUICK_CHECKLIST.md) - Fast deployment reference
+#### Steps
 
-### Presentation
-- [Demo Video Guide](./DEMO_VIDEO_GUIDE.md) - How to record your final presentation
+```bash
+# 1. Clone the repository
+git clone https://github.com/YOUR_USERNAME/movie-tracker.git
+cd movie-tracker
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up the database (uses SQLite by default)
+npx prisma generate
+npx prisma migrate dev --name init
+
+# 4. Start the development server
+npm run dev
+```
+
+#### 5. Open your browser
+
+Navigate to [http://localhost:3000](http://localhost:3000)
+
+---
+
+### Option 2: Deploy on AWS EC2
+
+#### Prerequisites
+
+- AWS EC2 instance (Amazon Linux 2023)
+- AWS RDS MySQL database
+- Security groups configured (ports 22, 3000, 3306)
+
+#### Steps
+
+```bash
+# 1. Connect to your EC2 instance
+ssh -i your-key.pem ec2-user@your-ec2-public-ip
+
+# 2. Install Git
+sudo yum install git -y
+
+# 3. Install Node.js and npm
+sudo yum install npm -y
+
+# 4. Install MySQL client (for database connection)
+sudo dnf install mariadb105 -y
+
+# 5. Clone the repository
+git clone https://github.com/YOUR_USERNAME/movie-tracker.git
+cd movie-tracker
+
+# 6. Install dependencies
+npm install
+
+# 7. Configure the database connection
+nano prisma/schema.prisma
+```
+
+#### 8. Update `prisma/schema.prisma`
+
+Change the datasource to use MySQL and your RDS endpoint:
+
+```prisma
+datasource db {
+  provider = "mysql"
+  url      = "mysql://admin:YOUR_PASSWORD@your-rds-endpoint.amazonaws.com:3306/moviedb"
+}
+```
+
+Save and exit (`Ctrl+X`, then `Y`, then `Enter`)
+
+```bash
+# 9. Run database migrations
+npx prisma migrate dev --name movierds
+
+# 10. Start the application
+npm run dev
+```
+
+#### 11. Access the application
+
+Open your browser and navigate to:
+
+```
+http://your-ec2-public-ip:3000
+```
+
+---
 
 ## Project Structure
 
 ```
 movie-tracker/
 ├── src/
-│   ├── app/              # Next.js app router pages
+│   ├── app/
 │   │   ├── api/          # API routes
 │   │   ├── dashboard/    # Dashboard page
 │   │   ├── login/        # Login page
-│   │   ├── signup/       # Signup page
-│   │   └── movies/       # Movie management pages
-│   ├── components/       # React components
-│   └── lib/              # Utilities (Prisma client)
+│   │   └── signup/       # Signup page
+│   └── lib/
+│       └── prisma.ts     # Database client
 ├── prisma/
 │   └── schema.prisma     # Database schema
-└── .env                  # Environment variables (create this)
+└── package.json
 ```
 
-## Troubleshooting
+---
 
-**Can't connect to RDS?**
-- Check security group allows port 3306
-- Verify RDS endpoint and credentials
-- Ensure RDS is publicly accessible
+## Database Schema
 
-**Migration errors?**
-- Ensure database exists: `CREATE DATABASE movietracker;`
-- Check DATABASE_URL format
-- Run `npx prisma migrate reset` to reset
+```prisma
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  movies    Movie[]
+}
 
-**Need help?** See [RDS_INTEGRATION_STEPS.md](./RDS_INTEGRATION_STEPS.md) troubleshooting section.
+model Movie {
+  id        Int       @id @default(autoincrement())
+  title     String
+  genre     String?
+  watchDate DateTime?
+  rating    Int?
+  notes     String?
+  imageUrl  String?
+  createdAt DateTime  @default(now())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+}
+```
+
+---
+
+## Useful Commands
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run Prisma Studio (database GUI)
+npx prisma studio
+
+# Reset database
+npx prisma migrate reset
+```
+
+---
+
+## License
+
+MIT License

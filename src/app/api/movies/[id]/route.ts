@@ -41,9 +41,19 @@ export async function DELETE(
     }
 
     // Delete the movie
-    await prisma.movie.delete({
-      where: { id: movieId }
+    const deleted = await prisma.movie.deleteMany({
+      where: { 
+        id: movieId,
+        userId: parseInt(userId)
+      }
     });
+
+    if (deleted.count === 0) {
+      return NextResponse.json(
+        { error: 'Movie not found or already deleted' },
+        { status: 404 }
+      );
+    }
 
     // Log the deletion to terminal
     console.log('Movie deleted:', {
