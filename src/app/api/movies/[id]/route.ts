@@ -25,22 +25,7 @@ export async function DELETE(
       );
     }
 
-    // Check if movie exists and belongs to the user
-    const movie = await prisma.movie.findFirst({
-      where: {
-        id: movieId,
-        userId: parseInt(userId)
-      }
-    });
-
-    if (!movie) {
-      return NextResponse.json(
-        { error: 'Movie not found or you do not have permission to delete it' },
-        { status: 404 }
-      );
-    }
-
-    // Delete the movie
+    // Delete the movie in a single query (faster - avoids extra round-trip)
     const deleted = await prisma.movie.deleteMany({
       where: { 
         id: movieId,
@@ -50,7 +35,7 @@ export async function DELETE(
 
     if (deleted.count === 0) {
       return NextResponse.json(
-        { error: 'Movie not found or already deleted' },
+        { error: 'Movie not found or you do not have permission to delete it' },
         { status: 404 }
       );
     }
@@ -58,7 +43,6 @@ export async function DELETE(
     // Log the deletion to terminal
     console.log('Movie deleted:', {
       id: movieId,
-      title: movie.title,
       userId: parseInt(userId)
     });
 
